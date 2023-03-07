@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Practising_Authentication
 {
-    public class AuthenticationManager
+    public class JWTAuthenticationManager
     {
         private readonly string? _key;
 
@@ -16,7 +16,7 @@ namespace Practising_Authentication
             {"test2", "P@ssw0rd" }
         };
 
-        public AuthenticationManager(string key)
+        public JWTAuthenticationManager(string key)
         {
             _key = key;
         }

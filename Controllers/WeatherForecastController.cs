@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Practising_Authentication.Model;
 
 namespace Practising_Authentication.Controllers
 {
@@ -6,18 +9,23 @@ namespace Practising_Authentication.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        private readonly JWTAuthenticationManager _authManager;
+
+        public WeatherForecastController(JWTAuthenticationManager jWTAuthenticationManager, ILogger<WeatherForecastController> logger)
+        {
+            _jWTAuthenticationManager = jWTAuthenticationManager;
+            _logger = logger;
+        }
+
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly JWTAuthenticationManager _jWTAuthenticationManager;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
-        }
-
+        [Authorize]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
@@ -28,6 +36,20 @@ namespace Practising_Authentication.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Authorize")]
+        public IActionResult AuthUsers([FromBody] Customers? customers)
+        {
+            var token = _jWTAuthenticationManager.Authenticate(customers?.Username, customers?.Password);
+
+            if (token == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(token);
         }
     }
 }
