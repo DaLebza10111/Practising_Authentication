@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 
 var key = "authenticationTest123";
 
+//Generate the authentication token
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -59,6 +60,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//allow the system to make use of authentication
 app.UseAuthentication();
 app.UseAuthorization();
 
