@@ -1,1 +1,3 @@
 # Practising_Authentication
+
+Following a coding tutorial on authenticating a user following the industry standards...
