@@ -40,9 +40,9 @@ namespace Practising_Authentication.Controllers
 
         [AllowAnonymous]
         [HttpPost("Authorize")]
-        public IActionResult AuthUsers([FromBody] Customers customers)
+        public IActionResult AuthUsers([FromBody] Customers? customers)
         {
-            var token = _jWTAuthenticationManager.Authenticate(customers.Username, customers.Password);
+            var token = _jWTAuthenticationManager.Authenticate(customers?.Username, customers?.Password);
 
             if (token == null)
             {
